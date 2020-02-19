@@ -1,3 +1,22 @@
+Skip; to; content;
+Why; GitHub ?
+    Enterprise ;
+Explore;
+Marketplace;
+Pricing;
+Search;
+
+Sign in
+    Sign; up;
+Code; Issues; 0; Pull; requests; 0; Projects; 0; Actions; Security; Pulse;
+Join; GitHub; today;
+GitHub; is; home; to; over; 40; million; developers; working; together; to; host; and; review; code, manage; projects, and; build; software; together.
+
+    few100 - learning - feb2020 / spec / 01; _types.spec.ts;
+@JeffryGonzalez JeffryGonzalez; done; with tests
+0; cb06c6; 1; minute; ago;
+452; lines(330 sloc); 12; KB;
+
 describe('declaring variables', () => {
     describe('using let', () => {
         it('uninitialized let', () => {
@@ -122,9 +141,7 @@ describe('declaring variables', () => {
 
             const s1 = `Jeff`;
             const story = `Chapter 1.
-
             It was a dark and stormy night.
-
             The end.`;
 
             const age = 50;
@@ -241,33 +258,36 @@ describe('declaring variables', () => {
             const [name, letters] = formatName('Kylo', 'Ren');
             expect(name).toBe('Ren, Kylo');
             expect(letters).toBe(9);
+
+
         });
         it('array destructuring', () => {
-            const someNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            const someNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-            const [first, second, , fourth] = someNumber;
+            const [first, second, , fourth] = someNumbers;
 
             expect(first).toBe(1);
             expect(second).toBe(2);
             expect(fourth).toBe(4);
 
-            const [head, ...rest] = someNumber;
+            const [head, ...rest] = someNumbers;
 
             expect(first).toBe(1);
             expect(rest).toEqual([2, 3, 4, 5, 6, 7, 8, 9]);
-
         });
         it('object destructuring', () => {
             const person = {
                 firstName: 'Ben',
                 lastName: 'Solo',
                 job: 'Jedi Trainee'
-
             };
+
             const { firstName, lastName: ln, ...rest } = person;
             expect(firstName).toBe('Ben');
             expect(ln).toBe('Solo');
             expect(rest).toEqual({ job: 'Jedi Trainee' });
+
+            // expect([1, 2, 3]).toEqual([1, 3, 3]);
         });
 
         it('array spread operator', () => {
@@ -275,89 +295,175 @@ describe('declaring variables', () => {
             const newNumbers = [0, ...numbers, 4];
             expect(newNumbers).toEqual([0, 1, 2, 3, 4]);
         });
-        it('object spread', () => {
-            const movie = ({ title: 'Star Wars', director: 'Lucas', yearReleased: 1977 });
-            const movie2 = ({ ...movie, yearReleased: 1977 });
 
-            expect(movie2).toEqual({ title: 'Star Wars', director: 'Lucas', yearReleased: 1977 })
+        it('object spread operator', () => {
+            const movie = { title: 'Star Wars', director: 'Lucas', yearReleased: 1978 };
+            const movie2 = { ...movie, yearReleased: 1977 };
 
+            expect(movie2).toEqual({ title: 'Star Wars', director: 'Lucas', yearReleased: 1977 });
         });
-
-
     });
+
     describe('object literals', () => {
-        it('as them', () => {
-            const bob = {
+        it('has them', () => {
+
+            interface Person {
+                name: string;
+                department: string;
+                salary: number;
+                manager?: string;
+            }
+
+            const bob: Person = {
                 name: 'Bob Smith',
                 department: 'QA',
-                salary: 100_000
+                salary: 100_000,
+                manager: 'Mary'
             };
 
-        });
-        interface Person {
-            name: string;
-            department: string;
-            salary: number;
-            manager?: string;
-        }
+            const mary: Person = {
+                name: 'Mary Jones',
+                department: 'CEO',
+                salary: 80_000
+            };
 
-        const bob: Person = {
-            name: 'Bob Smith',
-            department: 'QA',
-            salary: 100_000,
-            manager: 'Mary'
-        };
 
-        const mary: Person = {
-            name: 'Mary Jones',
-            department: 'CEO',
-            salary: 80_000
-        };
-        function printemployeeInfo(p: Person) {
-            let prelude = 'person ${p.name} works in ${p.department} and makes ${p.salary}';
-            if (p.manager) {
-                prelude += ' and they are managed by $(p.manager}';
-            } else {
-                prelude += ' and they have no message';
-
+            function printEmployeeInfo(p: Person) {
+                let prelude = `Person ${p.name} works in ${p.department} and makes ${p.salary}`;
+                if (p.manager) {
+                    prelude += ` and they are managed by ${p.manager}`;
+                } else {
+                    prelude += ' and they have no manager';
+                }
+                console.log(prelude);
             }
-            console.log(prelude);
+
+
+            printEmployeeInfo(bob);
+            printEmployeeInfo(mary);
+        });
+        it('has truthy and falsy values', () => {
+            expect('tacos').toBeTruthy();
+            expect('').toBeFalsy();
+            expect(0).toBeFalsy();
+            expect(-1).toBeTruthy();
+            expect(undefined).toBeFalsy();
+            expect(null).toBeFalsy();
+            expect(false).toBeFalsy();
+
+        });
+
+        it('has duck typing', () => {
+
+            interface MessageHavingThing { message: string; }
+            function logMessage(thingy: MessageHavingThing) {
+                console.log('Got: ' + thingy.message);
+            }
+
+            logMessage({ message: 'Call Your Mom' });
+
+            // logMessage();
+
+            const book = {
+                title: 'Clean your garage',
+                message: 'A clean garage is a sign of a healthy mind'
+            };
+
+            logMessage(book);
+
+
+        });
+    });
+});
+describe('extending interfaces', () => {
+    it('example', () => {
+
+        type MpaaRating = 'G' | 'PG' | 'PG13' | 'R' | 'NC-17';
+
+        interface Movie {
+            title: string;
+            director: string;
+            yearReleased: number;
+            cast: { [key: string]: CastMember };
+            mpaaRating: MpaaRating;
         }
-        printemployeeInfo(bob);
-        printemployeeInfo(mary);
+
+        interface CastMember {
+            role: string;
+            actor: string;
+        }
+        const starWars: Movie = {
+            title: 'Star Wars Iv: A New Hope',
+            director: 'Lucas',
+            yearReleased: 1977,
+            cast: {
+                'Luke Skywalker': { role: 'Luke', actor: 'Mark Hamill' },
+                Han: { role: 'Han Solo', actor: 'Harrison Ford' }
+            },
+            mpaaRating: 'PG'
+        };
+
+        expect(starWars.cast['Luke Skywalker'].actor).toBe('Mark Hamill');
+        expect(starWars.cast.Han.actor).toBe('Harrison Ford');
 
     });
-    it('has truthy and falsy values'), () => {
-        expect('tacos').toBeTruthy();
-        expect('').toBeFalsy();
-        expect('0').toBeFalsy();
-        expect(-1).toBeTruthy();
+    it('one more example', () => {
+
+        const bob = {
+            name: 'Bob smith',
+            phone: '555-1212',
+            department: 'DEV',
+            salary: 850_000
+        };
+
+        const jenny: PhoneablePerson = {
+            name: 'Jenny',
+            phone: '867-5309',
+            location: 'PA',
+            email: 'jenny@tutone.net'
+        };
+
+
+        interface PhoneablePerson { name: string; phone: string;[key: string]: any; }
+        function printPhoneList(person: PhoneablePerson) {
+            console.log(`Call ${person.name} at ${person.phone}`);
+        }
+
+        printPhoneList(bob);
+        printPhoneList(jenny);
+
+        const bill: PhoneablePerson = {
+            name: 'Bill Hulley',
+            phone: '788-6675',
+            location: 'WA',
+            hairColor: 'GRAY'
+        };
     });
-
-it('has duck typing'), () => {
-    interface MessageHavingThing { message: string; }
-    function logMessage(thingy: MessageHavingThing) {
-
-        console.log('Got: ' + thingy.message);
-    }
-
-    logMessage({ message: 'Call Your Mom' });
-
-    // logMessage();
-
-    const book = {
-        title: 'Clean your garage',
-        message: 'A clean garage is a sign of a healthy mind'
-    };
-
-    logMessage(book);
-
-});
 });
 
+describe('generics briefly', () => {
+    it('creating a generic dictionary', () => {
+
+        interface Dictionary<T> {
+            [key: string]: T;
+        }
+        interface Vehicle {
+            make: string;
+            model: string;
+        }
+        const vehicles: Dictionary<Vehicle> = {
+            738837: { make: 'Ford', model: 'Explorer' },
+            348373: { make: 'Audi', model: 'TT' },
+            38377388: { make: 'Chevy', model: 'Bolt' }
+        };
 
 
+        const friends: Dictionary<{ name: string }> = {
+            bill: { name: 'Bill Hulley' },
+            'amy stahl': { name: 'Amy S' },
+            class: { name: 'Classy Nose' }
+        };
 
-
-
-
+        expect(vehicles['738837'].make).toBe('Ford');
+    });
+});
